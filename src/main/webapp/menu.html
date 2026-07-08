@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TastyBowl Menu</title>
+  <style>
+    :root {
+      --ink: #24123f;
+      --muted: #716985;
+      --purple: #6f2de2;
+      --purple-dark: #4e18c3;
+      --orange: #ffb321;
+      --green: #218848;
+      --line: rgba(77, 45, 132, 0.14);
+      --card: #ffffff;
+      --page: #fbf8ff;
+      --shadow: 0 16px 34px rgba(56, 29, 111, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(137, 75, 241, 0.14), transparent 24rem),
+        linear-gradient(180deg, #ffffff 0%, var(--page) 58%, #f3edff 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(90deg, #8743f2 0%, #5a1bcc 100%);
+      box-shadow: 0 7px 22px rgba(60, 22, 144, 0.26);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(1200px, calc(100% - 40px));
+      min-height: 76px;
+      margin: 0 auto;
+      color: #fff;
+      gap: 24px;
+    }
+
+    .brand,
+    .nav-links,
+    .nav-actions,
+    .profile,
+    .cart {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand {
+      gap: 10px;
+      font-size: 25px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #fff2bd, #ffb629);
+      box-shadow: inset 0 -5px 10px rgba(107, 47, 9, 0.18), 0 8px 18px rgba(52, 16, 129, 0.22);
+    }
+
+    .brand-mark::before {
+      content: "";
+      width: 25px;
+      height: 12px;
+      border: 4px solid #5b1dcf;
+      border-top: 0;
+      border-radius: 0 0 16px 16px;
+      background: #fff;
+      transform: translateY(3px);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      width: 22px;
+      height: 7px;
+      border-radius: 50%;
+      background: #f05254;
+      box-shadow: 7px 1px 0 #38b86f, -7px 2px 0 #fff;
+    }
+
+    .nav-links {
+      justify-content: center;
+      gap: 16px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 17px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-actions {
+      gap: 12px;
+    }
+
+    .cart {
+      position: relative;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.13);
+      font-size: 21px;
+    }
+
+    .cart strong {
+      position: absolute;
+      top: -5px;
+      right: -2px;
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--orange);
+      font-size: 10px;
+      box-shadow: 0 4px 10px rgba(255, 186, 45, 0.45);
+    }
+
+    .profile {
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 15px 0 6px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.14);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: #ffe0b2;
+      font-size: 19px;
+    }
+
+    .restaurant-hero {
+      width: min(1200px, calc(100% - 40px));
+      min-height: 360px;
+      margin: 28px auto 0;
+      overflow: hidden;
+      border-radius: 28px;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(11, 9, 14, 0.95) 0%, rgba(18, 14, 24, 0.75) 42%, rgba(18, 14, 24, 0.1) 100%),
+        url("https://images.unsplash.com/photo-1563379091339-03246963d4a9?auto=format&fit=crop&w=1500&q=80");
+      background-position: center;
+      background-size: cover;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-content {
+      max-width: 610px;
+      padding: 34px 42px 38px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      margin-bottom: 38px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .restaurant-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .restaurant-logo {
+      display: grid;
+      place-items: center;
+      width: 124px;
+      height: 124px;
+      flex: 0 0 124px;
+      border: 4px solid #d5a42b;
+      border-radius: 50%;
+      color: #ffdd75;
+      background: #08070a;
+      text-align: center;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.34);
+    }
+
+    .restaurant-logo strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .restaurant-logo span {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .restaurant-title {
+      min-width: 0;
+    }
+
+    .title-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .title-line h1 {
+      margin: 0;
+      font-size: clamp(31px, 4vw, 45px);
+      line-height: 1;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .hero-rating {
+      display: inline-flex;
+      align-items: center;
+      min-height: 35px;
+      padding: 0 13px;
+      border-radius: 9px;
+      color: #fff;
+      background: var(--green);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .restaurant-title p {
+      margin: 11px 0 22px;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .quick-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .quick-info span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 14px;
+      color: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .coupon {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 44px;
+      margin-top: 24px;
+      padding: 0 20px;
+      border-radius: 12px;
+      color: #5722c9;
+      background: #ffffff;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .coupon span {
+      color: #8a46f4;
+    }
+
+    .tabs-bar {
+      position: sticky;
+      top: 76px;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .tabs-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(1200px, calc(100% - 40px));
+      min-height: 76px;
+      margin: 0 auto;
+      gap: 24px;
+    }
+
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      min-width: 0;
+    }
+
+    .tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 76px;
+      border-bottom: 3px solid transparent;
+      color: #3a2b55;
+      font-size: 15px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      color: var(--purple);
+      border-color: var(--purple);
+    }
+
+    .menu-tools {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 0 0 auto;
+    }
+
+    .menu-search {
+      display: flex;
+      align-items: center;
+      width: 286px;
+      height: 46px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 23px;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(66, 35, 126, 0.06);
+    }
+
+    .menu-search input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      color: var(--ink);
+      background: transparent;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .menu-search input::placeholder {
+      color: #9a94ad;
+    }
+
+    .veg-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: #3a2b55;
+      font-size: 14px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .switch {
+      position: relative;
+      width: 38px;
+      height: 22px;
+      border-radius: 12px;
+      background: #d8d4df;
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(30, 20, 52, 0.22);
+    }
+
+    .page-shell {
+      display: grid;
+      grid-template-columns: 245px minmax(0, 1fr);
+      gap: 34px;
+      width: min(1200px, calc(100% - 40px));
+      margin: 30px auto 34px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 176px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 12px 28px rgba(51, 28, 97, 0.08);
+    }
+
+    .sidebar h2 {
+      margin: 0;
+      padding: 23px 19px 12px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .category-list {
+      display: grid;
+      gap: 6px;
+      padding: 0 11px 18px;
+    }
+
+    .category-list a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 54px;
+      padding: 0 14px;
+      border-radius: 10px;
+      color: #392c52;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .category-list a.active,
+    .category-list a:hover {
+      color: var(--purple);
+      background: #eee5ff;
+    }
+
+    .side-offer {
+      margin: 0 13px 18px;
+      padding: 18px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #eee5ff, #fff4f0);
+    }
+
+    .side-offer strong {
+      display: block;
+      color: var(--purple);
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .side-offer small {
+      display: block;
+      margin-top: 10px;
+      color: #625873;
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .menu-section h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 3px 0 22px;
+      font-size: 27px;
+      line-height: 1.1;
+      font-weight: 900;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .menu-card {
+      overflow: hidden;
+      border: 1px solid rgba(30, 20, 52, 0.08);
+      border-radius: 15px;
+      background: var(--card);
+      box-shadow: 0 12px 28px rgba(51, 28, 97, 0.1);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(111, 45, 226, 0.22);
+      box-shadow: 0 22px 40px rgba(51, 28, 97, 0.16);
+    }
+
+    .food-image {
+      position: relative;
+      height: 178px;
+      overflow: hidden;
+      background: #eee6fb;
+    }
+
+    .food-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 260ms ease;
+    }
+
+    .menu-card:hover .food-image img {
+      transform: scale(1.06);
+    }
+
+    .food-type {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #1e9e53;
+      border-radius: 3px;
+      background: #fff;
+    }
+
+    .food-type::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #1e9e53;
+    }
+
+    .food-type.non-veg {
+      border-color: #b83232;
+    }
+
+    .food-type.non-veg::after {
+      background: #b83232;
+    }
+
+    .best-tag {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      max-width: calc(100% - 24px);
+      padding: 7px 10px;
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(135deg, #6f2de2, #a244f7);
+      box-shadow: 0 8px 18px rgba(111, 45, 226, 0.28);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .food-body {
+      padding: 15px 14px 14px;
+    }
+
+    .food-body h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .description {
+      min-height: 42px;
+      margin: 8px 0 12px;
+      color: #625b73;
+      font-size: 14px;
+      line-height: 1.42;
+      font-weight: 700;
+    }
+
+    .rating-row,
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .rating-row {
+      margin-bottom: 9px;
+      color: #5d546d;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .stars {
+      color: #f7a900;
+      white-space: nowrap;
+    }
+
+    .price {
+      color: #211133;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .add-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 76px;
+      height: 36px;
+      border: 2px solid var(--purple);
+      border-radius: 10px;
+      color: var(--purple);
+      background: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .promo-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      width: min(1200px, calc(100% - 40px));
+      min-height: 150px;
+      margin: 26px auto 28px;
+      padding: 28px 54px;
+      border-radius: 22px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 92% 28%, rgba(255, 255, 255, 0.22), transparent 8rem),
+        linear-gradient(100deg, #7431df 0%, #9a3ef2 55%, #591aca 100%);
+      box-shadow: 0 18px 38px rgba(90, 28, 203, 0.28);
+    }
+
+    .promo-strip small,
+    .promo-strip strong,
+    .promo-strip span {
+      display: block;
+    }
+
+    .promo-strip small {
+      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .promo-strip strong {
+      max-width: 580px;
+      font-size: clamp(27px, 3vw, 38px);
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .promo-strip strong span {
+      display: inline;
+      color: var(--orange);
+    }
+
+    .promo-strip a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 145px;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 24px;
+      color: var(--ink);
+      background: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(35, 11, 88, 0.2);
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 0 8px 28px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .footer nav {
+      display: flex;
+      gap: 34px;
+    }
+
+    @media (max-width: 1080px) {
+      .nav {
+        min-height: auto;
+        padding: 14px 0;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .tabs-bar {
+        top: 116px;
+      }
+
+      .tabs-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .tabs {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .tab {
+        min-height: 42px;
+      }
+
+      .menu-tools {
+        width: 100%;
+      }
+
+      .menu-search {
+        flex: 1;
+      }
+
+      .page-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .category-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav,
+      .restaurant-hero,
+      .tabs-inner,
+      .page-shell,
+      .promo-strip,
+      .footer {
+        width: min(100% - 30px, 1200px);
+      }
+
+      .brand {
+        font-size: 23px;
+      }
+
+      .nav-actions {
+        margin-left: auto;
+      }
+
+      .profile span:nth-child(2) {
+        display: none;
+      }
+
+      .restaurant-hero {
+        min-height: 0;
+        background:
+          linear-gradient(180deg, rgba(12, 10, 16, 0.96) 0%, rgba(16, 12, 22, 0.86) 58%, rgba(16, 12, 22, 0.28) 100%),
+          url("https://images.unsplash.com/photo-1563379091339-03246963d4a9?auto=format&fit=crop&w=1000&q=80");
+        background-position: center;
+        background-size: cover;
+      }
+
+      .hero-content {
+        padding: 24px;
+      }
+
+      .back-link {
+        margin-bottom: 24px;
+      }
+
+      .restaurant-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .restaurant-logo {
+        width: 104px;
+        height: 104px;
+        flex-basis: 104px;
+      }
+
+      .menu-tools {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .menu-search {
+        width: 100%;
+      }
+
+      .category-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .food-image {
+        height: 212px;
+      }
+
+      .promo-strip {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 26px;
+      }
+
+      .promo-strip a {
+        width: 100%;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer nav {
+        flex-wrap: wrap;
+        gap: 16px 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .topbar,
+      .tabs-bar {
+        position: relative;
+        top: auto;
+      }
+
+      .nav-links {
+        gap: 8px;
+      }
+
+      .nav-links a {
+        min-height: 39px;
+        padding: 0 13px;
+        font-size: 13px;
+      }
+
+      .cart {
+        width: 40px;
+        height: 40px;
+      }
+
+      .profile {
+        min-height: 40px;
+        padding-right: 10px;
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+      }
+
+      .category-list {
+        grid-template-columns: 1fr;
+      }
+
+      .food-image {
+        height: 190px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>TastyBowl</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a class="active" href="#menu">Restaurants</a></li>
+        <li><a href="#offer">Offers</a></li>
+        <li><a href="#">Track Order</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a class="cart" href="#" aria-label="Cart">
+          <span>&#128722;</span>
+          <strong>2</strong>
+        </a>
+        <a class="profile" href="#">
+          <span class="avatar">&#128102;</span>
+          <span>Profile</span>
+          <span>&#8964;</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="restaurant-hero">
+      <div class="hero-content">
+        <a class="back-link" href="index.html">&#8592; Back to Restaurants</a>
+
+        <div class="restaurant-row">
+          <div class="restaurant-logo">
+            <div>
+              <strong>Paradise</strong>
+              <span>BIRYANI</span>
+            </div>
+          </div>
+
+          <div class="restaurant-title">
+            <div class="title-line">
+              <h1>Paradise Biryani</h1>
+              <span class="hero-rating">4.8 &#9733;</span>
+            </div>
+            <p>Biryani, North Indian, Mughlai</p>
+            <div class="quick-info">
+              <span>&#9201; 30-35 min</span>
+              <span>&#128205; 2.5 km</span>
+              <span>&#8377;250 for two</span>
+            </div>
+            <div class="coupon">
+              FLAT 50% OFF <span>Use code: TASTY50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tabs-bar" aria-label="Restaurant details">
+      <div class="tabs-inner">
+        <div class="tabs">
+          <a class="tab active" href="#menu">&#127858; Menu</a>
+          <a class="tab" href="#">&#11088; Reviews 4.8 (2.4K)</a>
+          <a class="tab" href="#">&#8505; Restaurant Info</a>
+        </div>
+
+        <div class="menu-tools">
+          <label class="menu-search">
+            <input type="search" placeholder="Search in menu..." aria-label="Search in menu">
+            <span>&#128269;</span>
+          </label>
+          <span class="veg-switch">Veg Only <span class="switch" aria-hidden="true"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-shell" id="menu">
+      <aside class="sidebar">
+        <h2>Categories</h2>
+        <nav class="category-list">
+          <a class="active" href="#bestsellers">&#128293; Bestsellers</a>
+          <a href="#biryani">&#127858; Biryani</a>
+          <a href="#starters">&#127813; Starters</a>
+          <a href="#curries">&#127835; Curries</a>
+          <a href="#combos">&#129368; Combos</a>
+          <a href="#desserts">&#127856; Desserts</a>
+          <a href="#beverages">&#129380; Beverages</a>
+        </nav>
+        <div class="side-offer">
+          <strong>Flat 50% OFF</strong>
+          <small>Use code TASTY50 and get 50% OFF on your first order.</small>
+        </div>
+      </aside>
+
+      <section class="menu-section" id="bestsellers">
+        <h2>&#128293; Bestsellers</h2>
+
+        <div class="menu-grid">
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1563379091339-03246963d4a9?auto=format&fit=crop&w=700&q=80" alt="Chicken Dum Biryani">
+              <span class="food-type non-veg" aria-label="Non vegetarian"></span>
+              <span class="best-tag">Bestseller</span>
+            </div>
+            <div class="food-body">
+              <h3>Chicken Dum Biryani</h3>
+              <p class="description">Aromatic basmati rice cooked with succulent chicken and spices.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.8</span>
+                <span>1.2K ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;249</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1631515242808-497c3fbd3972?auto=format&fit=crop&w=700&q=80" alt="Mutton Dum Biryani">
+              <span class="food-type non-veg" aria-label="Non vegetarian"></span>
+              <span class="best-tag">Chef Special</span>
+            </div>
+            <div class="food-body">
+              <h3>Mutton Dum Biryani</h3>
+              <p class="description">Tender mutton cooked with basmati rice and authentic spices.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.7</span>
+                <span>982 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;329</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=700&q=80" alt="Paneer Tikka Biryani">
+              <span class="food-type" aria-label="Vegetarian"></span>
+              <span class="best-tag">Veg Favorite</span>
+            </div>
+            <div class="food-body">
+              <h3>Paneer Tikka Biryani</h3>
+              <p class="description">Flavorful paneer tikka layered with fragrant biryani rice.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.6</span>
+                <span>742 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;229</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=700&q=80" alt="Chicken 65">
+              <span class="food-type non-veg" aria-label="Non vegetarian"></span>
+              <span class="best-tag">Spicy</span>
+            </div>
+            <div class="food-body">
+              <h3>Chicken 65</h3>
+              <p class="description">Spicy deep-fried chicken tossed with curry leaves and chillies.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.6</span>
+                <span>655 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;179</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=700&q=80" alt="Hyderabadi Chicken Haleem">
+              <span class="food-type non-veg" aria-label="Non vegetarian"></span>
+              <span class="best-tag">Rich Flavor</span>
+            </div>
+            <div class="food-body">
+              <h3>Hyderabadi Chicken Haleem</h3>
+              <p class="description">Slow-cooked chicken and wheat delicacy with rich flavors.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.7</span>
+                <span>532 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;199</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=700&q=80" alt="Mirchi Ka Salan">
+              <span class="food-type" aria-label="Vegetarian"></span>
+              <span class="best-tag">Classic Curry</span>
+            </div>
+            <div class="food-body">
+              <h3>Mirchi Ka Salan</h3>
+              <p class="description">Spicy, creamy green chilli curry served with bagara rice.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.5</span>
+                <span>421 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;149</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=700&q=80" alt="Double Ka Meetha">
+              <span class="food-type" aria-label="Vegetarian"></span>
+              <span class="best-tag">Dessert</span>
+            </div>
+            <div class="food-body">
+              <h3>Double Ka Meetha</h3>
+              <p class="description">Classic Hyderabadi dessert made with bread, milk and rabri.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.6</span>
+                <span>311 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;99</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1613844237701-8f3664fc2eff?auto=format&fit=crop&w=700&q=80" alt="Raita">
+              <span class="food-type" aria-label="Vegetarian"></span>
+              <span class="best-tag">Cool Side</span>
+            </div>
+            <div class="food-body">
+              <h3>Raita</h3>
+              <p class="description">Cooling yogurt with onions, cucumber, herbs and spices.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.4</span>
+                <span>278 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;69</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=700&q=80" alt="Masala Coke">
+              <span class="food-type" aria-label="Vegetarian"></span>
+              <span class="best-tag">Beverage</span>
+            </div>
+            <div class="food-body">
+              <h3>Masala Coke</h3>
+              <p class="description">Refreshing cola with a hint of Indian spices and lemon.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.3</span>
+                <span>189 ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;69</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="food-image">
+              <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=700&q=80" alt="Family Biryani Combo">
+              <span class="food-type non-veg" aria-label="Non vegetarian"></span>
+              <span class="best-tag">Combo Deal</span>
+            </div>
+            <div class="food-body">
+              <h3>Family Biryani Combo</h3>
+              <p class="description">Chicken biryani, starter, raita, dessert and drinks for four.</p>
+              <div class="rating-row">
+                <span class="stars">&#9733; 4.9</span>
+                <span>1.8K ratings</span>
+              </div>
+              <div class="price-row">
+                <span class="price">&#8377;799</span>
+                <button class="add-btn" type="button">Add</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section class="promo-strip" id="offer">
+      <div>
+        <small>&#10024; Special Offer &#10024;</small>
+        <strong>Get <span>50% OFF</span> on your first order!</strong>
+      </div>
+      <a href="#menu">Order Now &#8594;</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2024 TastyBowl. All rights reserved.</p>
+    <nav>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Contact Us</a>
+    </nav>
+  </footer>
+</body>
+</html>

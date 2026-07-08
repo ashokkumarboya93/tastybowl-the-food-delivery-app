@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurent page</title>
+  <style>
+    :root {
+      --ink: #271044;
+      --muted: #5c6289;
+      --purple: #6f2de2;
+      --purple-dark: #4e18c3;
+      --orange: #ffba2d;
+      --line: rgba(91, 49, 164, 0.12);
+      --shadow: 0 18px 42px rgba(65, 26, 137, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Inter", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 6%, rgba(169, 106, 255, 0.18), transparent 28rem),
+        linear-gradient(180deg, #fff 0%, #fbf8ff 54%, #f5efff 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(90deg, #8442f2 0%, #5d1ed0 100%);
+      box-shadow: 0 6px 20px rgba(60, 22, 144, 0.24);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(1200px, calc(100% - 40px));
+      min-height: 76px;
+      margin: 0 auto;
+      color: #fff;
+      gap: 24px;
+    }
+
+    .brand,
+    .profile,
+    .cart,
+    .menu a {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .brand {
+      gap: 10px;
+      font-size: 25px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #fff2bd, #ffb629);
+      box-shadow: inset 0 -5px 10px rgba(107, 47, 9, 0.18), 0 8px 18px rgba(52, 16, 129, 0.22);
+    }
+
+    .brand-mark::before {
+      content: "";
+      width: 25px;
+      height: 12px;
+      border-radius: 0 0 16px 16px;
+      border: 4px solid #5b1dcf;
+      border-top: 0;
+      background: #fff;
+      transform: translateY(3px);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      width: 22px;
+      height: 7px;
+      border-radius: 50%;
+      background: #f05254;
+      box-shadow: 7px 1px 0 #38b86f, -7px 2px 0 #fff;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 17px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .menu a {
+      min-height: 42px;
+      padding: 0 17px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .menu a.active,
+    .menu a:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cart {
+      position: relative;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.13);
+      font-size: 21px;
+    }
+
+    .cart strong {
+      position: absolute;
+      top: -5px;
+      right: -2px;
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--orange);
+      font-size: 10px;
+      box-shadow: 0 4px 10px rgba(255, 186, 45, 0.45);
+    }
+
+    .profile {
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 15px 0 6px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.14);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: #ffe0b2;
+      font-size: 19px;
+    }
+
+    .hero {
+      min-height: 620px;
+      background-image:
+        linear-gradient(90deg, rgba(255,255,255,0.93) 0%, rgba(255,255,255,0.74) 25%, rgba(255,255,255,0.04) 56%),
+        url("https://ik.imagekit.io/njxa1mbn3/Food%20App/HeroBG.png");
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .hero-inner {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+      padding-top: 92px;
+    }
+
+    .hero-copy {
+      max-width: 555px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(46px, 5.4vw, 75px);
+      line-height: 0.98;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--purple);
+    }
+
+    .hero p {
+      width: min(420px, 100%);
+      margin: 28px 0 25px;
+      color: var(--muted);
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      width: min(510px, 100%);
+      height: 66px;
+      padding: 8px;
+      border: 2px solid #fff;
+      border-radius: 33px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 14px 30px rgba(111, 45, 226, 0.16);
+    }
+
+    .search-box span {
+      width: 52px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .search-box input {
+      min-width: 0;
+      flex: 1;
+      height: 100%;
+      border: 0;
+      outline: 0;
+      color: var(--ink);
+      background: transparent;
+      font-weight: 700;
+    }
+
+    .search-box input::placeholder {
+      color: #8790aa;
+    }
+
+    .search-box button {
+      height: 50px;
+      min-width: 157px;
+      border: 0;
+      border-radius: 25px;
+      color: #fff;
+      background: linear-gradient(135deg, #8844f5, #6422d8);
+      box-shadow: 0 10px 18px rgba(111, 45, 226, 0.24);
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: min(560px, 100%);
+      margin-top: 52px;
+    }
+
+    .benefits article {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .benefits article > span {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      flex: 0 0 54px;
+      border-radius: 50%;
+      background: #eee3ff;
+      color: var(--purple);
+      font-size: 23px;
+    }
+
+    .benefits article:nth-child(2) > span {
+      background: #ffe3f0;
+    }
+
+    .benefits article:nth-child(3) > span {
+      background: #fff0cc;
+    }
+
+    .benefits strong,
+    .benefits small {
+      display: block;
+    }
+
+    .benefits strong {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .benefits small {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 18px;
+      width: min(1200px, calc(100% - 40px));
+      margin: -6px auto 42px;
+      padding: 27px 35px;
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .categories a {
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      min-width: 0;
+      color: var(--ink);
+    }
+
+    .categories span {
+      display: grid;
+      place-items: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f6edff, #e6d5ff);
+      font-size: 39px;
+      box-shadow: inset 0 -8px 18px rgba(111, 45, 226, 0.08);
+    }
+
+    .categories strong {
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .restaurants {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 25px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 38px);
+      line-height: 1;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .section-heading h2 span {
+      color: var(--purple);
+    }
+
+    .section-heading button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-width: 188px;
+      height: 52px;
+      padding: 0 24px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 12px 24px rgba(65, 26, 137, 0.1);
+      font-weight: 900;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .food-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(55, 35, 92, 0.13);
+    }
+
+    .food-link {
+      display: block;
+      height: 100%;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .food-card img {
+      display: block;
+      width: 100%;
+      height: 178px;
+      object-fit: cover;
+    }
+
+    .rating {
+      position: absolute;
+      top: 152px;
+      right: 0;
+      min-width: 68px;
+      padding: 8px 11px;
+      border-radius: 17px 0 0 17px;
+      color: #fff;
+      background: linear-gradient(135deg, #8a44f5, #6320da);
+      font-size: 13px;
+      font-weight: 900;
+      box-shadow: 0 8px 16px rgba(111, 45, 226, 0.3);
+    }
+
+    .card-body {
+      padding: 16px 18px 18px;
+    }
+
+    .card-body h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .card-body p {
+      margin: 8px 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .card-body div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .card-body strong {
+      color: var(--purple);
+    }
+
+    .promo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 190px;
+      width: min(1200px, calc(100% - 40px));
+      margin: 48px auto 26px;
+      padding: 32px 62px;
+      border-radius: 20px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 12% 48%, rgba(255, 255, 255, 0.2), transparent 8rem),
+        linear-gradient(100deg, #7330df 0%, #a244f7 56%, #5f1bd1 100%);
+      box-shadow: 0 18px 38px rgba(90, 28, 203, 0.28);
+    }
+
+    .promo p,
+    .promo h2,
+    .promo small {
+      display: block;
+      margin: 0;
+    }
+
+    .promo p {
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .promo h2 {
+      max-width: 500px;
+      font-size: clamp(30px, 3.2vw, 39px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .promo h2 span {
+      color: var(--orange);
+    }
+
+    .promo small {
+      max-width: 460px;
+      margin-top: 10px;
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .promo a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      min-width: 158px;
+      height: 48px;
+      border-radius: 24px;
+      color: var(--ink);
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(35, 11, 88, 0.2);
+      font-weight: 900;
+    }
+
+    .footer {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .footer-art {
+      overflow: hidden;
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(82, 35, 164, 0.18);
+    }
+
+    .footer-art img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .newsletter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 26px;
+      margin-top: -74px;
+      padding: 20px 20px 20px 30px;
+      border-radius: 55px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 20px 38px rgba(71, 31, 148, 0.18);
+      transform: translateY(40px);
+    }
+
+    .newsletter > div {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-width: 270px;
+    }
+
+    .newsletter > div > span {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(135deg, #8e47f5, #5d1ed0);
+      box-shadow: 0 10px 22px rgba(111, 45, 226, 0.32);
+      font-size: 30px;
+    }
+
+    .newsletter strong,
+    .newsletter small {
+      display: block;
+    }
+
+    .newsletter strong {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .newsletter small {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .newsletter form {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 300px;
+      height: 66px;
+      padding: 8px;
+      border-radius: 33px;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(91, 49, 164, 0.1), 0 8px 18px rgba(66, 35, 126, 0.08);
+    }
+
+    .newsletter input {
+      min-width: 0;
+      flex: 1;
+      height: 100%;
+      padding: 0 24px;
+      border: 0;
+      outline: 0;
+      color: var(--ink);
+      background: transparent;
+      font-weight: 700;
+    }
+
+    .newsletter input::placeholder {
+      color: #a5a0bc;
+    }
+
+    .newsletter button {
+      width: 170px;
+      height: 50px;
+      border: 0;
+      border-radius: 25px;
+      color: #fff;
+      background: linear-gradient(135deg, #8b44f5, #6320d8);
+      box-shadow: 0 12px 23px rgba(111, 45, 226, 0.23);
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .footer-bottom {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 74px 12px 23px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .footer-bottom p {
+      margin: 0;
+    }
+
+    .footer-bottom nav {
+      display: flex;
+      gap: 48px;
+    }
+
+    .footer-bottom div {
+      display: flex;
+      justify-content: flex-end;
+      gap: 23px;
+      font-size: 18px;
+    }
+
+    @media (max-width: 1080px) {
+      .nav {
+        min-height: auto;
+        padding: 14px 0;
+        flex-wrap: wrap;
+      }
+
+      .menu {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .hero {
+        min-height: 570px;
+        background-position: 56% top;
+      }
+
+      .restaurant-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .nav,
+      .hero-inner,
+      .categories,
+      .restaurants,
+      .promo,
+      .footer {
+        width: min(100% - 30px, 1200px);
+      }
+
+      .brand {
+        font-size: 23px;
+      }
+
+      .nav-actions {
+        margin-left: auto;
+      }
+
+      .profile span:nth-child(2) {
+        display: none;
+      }
+
+      .hero {
+        min-height: 650px;
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.84) 45%, rgba(255,255,255,0.08) 74%),
+          url("https://ik.imagekit.io/njxa1mbn3/Food%20App/HeroBG.png");
+        background-position: 63% bottom;
+      }
+
+      .hero-inner {
+        padding-top: 52px;
+      }
+
+      .hero-copy {
+        max-width: 100%;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .search-box {
+        height: auto;
+        min-height: 64px;
+        flex-wrap: wrap;
+        border-radius: 28px;
+      }
+
+      .search-box button {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .benefits {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 34px;
+      }
+
+      .categories {
+        grid-template-columns: repeat(4, 1fr);
+        padding: 20px 16px;
+        margin-top: -16px;
+      }
+
+      .categories span {
+        width: 62px;
+        height: 62px;
+        font-size: 30px;
+      }
+
+      .promo {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 22px;
+        min-height: 0;
+        padding: 28px 24px;
+      }
+
+      .footer-art {
+        border-radius: 18px;
+      }
+
+      .newsletter {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: -34px;
+        padding: 18px;
+        border-radius: 25px;
+        transform: translateY(24px);
+      }
+
+      .newsletter form {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .footer-bottom {
+        padding-top: 54px;
+      }
+
+      .footer-bottom nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px 28px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .topbar {
+        position: relative;
+      }
+
+      .nav {
+        gap: 13px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .menu {
+        gap: 8px;
+      }
+
+      .menu a {
+        min-height: 39px;
+        padding: 0 13px;
+        font-size: 13px;
+      }
+
+      .cart {
+        width: 40px;
+        height: 40px;
+      }
+
+      .profile {
+        min-height: 40px;
+        padding-right: 10px;
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+      }
+
+      .hero {
+        min-height: 690px;
+        background-size: auto 100%;
+        background-position: 66% bottom;
+      }
+
+      .hero h1 {
+        font-size: 43px;
+      }
+
+      .categories {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .section-heading button {
+        width: 100%;
+      }
+
+      .restaurant-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .food-card img {
+        height: 190px;
+      }
+
+      .rating {
+        top: 164px;
+      }
+
+      .promo a,
+      .newsletter button {
+        width: 100%;
+      }
+
+      .newsletter form {
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .newsletter input {
+        height: 48px;
+      }
+
+      .newsletter > div {
+        min-width: 0;
+      }
+
+      .footer-bottom {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>TastyBowl</span>
+      </a>
+
+      <ul class="menu">
+        <li><a class="active" href="#">Home</a></li>
+        <li><a href="#restaurants">Restaurants</a></li>
+        <li><a href="#offer">Offers</a></li>
+        <li><a href="#">Track Order</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a class="cart" href="#" aria-label="Cart">
+          <span>&#128722;</span>
+          <strong>3</strong>
+        </a>
+        <a class="profile" href="#">
+          <span class="avatar">&#128102;</span>
+          <span>Profile</span>
+          <span>&#8964;</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1>Delicious Food <span>Delivered Fast</span></h1>
+          <p>Order from your favorite restaurants and get it delivered at your doorstep.</p>
+
+          <form class="search-box">
+            <span>&#128205;</span>
+            <input type="text" aria-label="Delivery location" placeholder="Enter your delivery location">
+            <button type="submit">Search Food</button>
+          </form>
+
+          <div class="benefits">
+            <article>
+              <span>&#128757;</span>
+              <div>
+                <strong>Fast Delivery</strong>
+                <small>in 30 mins</small>
+              </div>
+            </article>
+            <article>
+              <span>&#9733;</span>
+              <div>
+                <strong>Best Quality</strong>
+                <small>&amp; Tasty Food</small>
+              </div>
+            </article>
+            <article>
+              <span>&#127941;</span>
+              <div>
+                <strong>Live Tracking</strong>
+                <small>of your order</small>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories" aria-label="Food categories">
+      <a href="#"><span>&#127828;</span><strong>Burgers</strong></a>
+      <a href="#"><span>&#127829;</span><strong>Pizza</strong></a>
+      <a href="#"><span>&#129367;</span><strong>Biryani</strong></a>
+      <a href="#"><span>&#127843;</span><strong>Sushi</strong></a>
+      <a href="#"><span>&#127856;</span><strong>Desserts</strong></a>
+      <a href="#"><span>&#129380;</span><strong>Drinks</strong></a>
+      <a href="#"><span>&#8862;</span><strong>More</strong></a>
+    </section>
+
+    <section class="restaurants" id="restaurants">
+      <div class="section-heading">
+        <h2>Popular <span>Restaurants</span></h2>
+        <button type="button">Recommended <span>&#8964;</span></button>
+      </div>
+
+      <div class="restaurant-grid">
+        <article class="food-card">
+          <a class="food-link" href="menu.html">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=80" alt="Burger with fries">
+            <span class="rating">&#9733; 4.7</span>
+            <div class="card-body">
+              <h3>Burger House</h3>
+              <p>Burgers &middot; Fast Food</p>
+              <div><span>&#9719; 30 mins</span><strong>&#128757; Free</strong></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="food-card">
+          <a class="food-link" href="menu.html">
+            <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=700&q=80" alt="Fresh pizza">
+            <span class="rating">&#9733; 4.6</span>
+            <div class="card-body">
+              <h3>Pizza Point</h3>
+              <p>Pizza &middot; Italian</p>
+              <div><span>&#9719; 25 mins</span><strong>&#128757; Free</strong></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="food-card">
+          <a class="food-link" href="menu.html">
+            <img src="https://images.unsplash.com/photo-1631515242808-497c3fbd3972?auto=format&fit=crop&w=700&q=80" alt="Biryani bowl">
+            <span class="rating">&#9733; 4.8</span>
+            <div class="card-body">
+              <h3>Biryani Hub</h3>
+              <p>Biryani &middot; Indian</p>
+              <div><span>&#9719; 35 mins</span><strong>&#128757; Free</strong></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="food-card">
+          <a class="food-link" href="menu.html">
+            <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=700&q=80" alt="Sushi platter">
+            <span class="rating">&#9733; 4.9</span>
+            <div class="card-body">
+              <h3>Sushi World</h3>
+              <p>Sushi &middot; Japanese</p>
+              <div><span>&#9719; 40 mins</span><strong>&#8377;120</strong></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="food-card">
+          <a class="food-link" href="menu.html">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80" alt="Layered cake dessert">
+            <span class="rating">&#9733; 4.5</span>
+            <div class="card-body">
+              <h3>Sweet Corner</h3>
+              <p>Desserts &middot; Bakery</p>
+              <div><span>&#9719; 20 mins</span><strong>&#128757; Free</strong></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="food-card">
+          <a class="food-link" href="menu.html">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=700&q=80" alt="Cup of coffee">
+            <span class="rating">&#9733; 4.7</span>
+            <div class="card-body">
+              <h3>Coffee Craze</h3>
+              <p>Cafe &middot; Beverages</p>
+              <div><span>&#9719; 15 mins</span><strong>&#128757; Free</strong></div>
+            </div>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section class="promo" id="offer" aria-label="Special offer">
+      <div>
+        <p>&#10024; Special Offer &#10024;</p>
+        <h2>Get <span>50% OFF</span> On Your First Order!</h2>
+        <small>Use code TASTY50 and enjoy delicious food at half the price.</small>
+      </div>
+      <a href="#">Order Now <span>&#8594;</span></a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <section class="footer-art" aria-label="TastyBowl newsletter">
+      <img src="https://ik.imagekit.io/njxa1mbn3/Food%20App/footer.png?updatedAt=1783249862427" alt="TastyBowl footer food offer">
+    </section>
+
+    <section class="newsletter">
+      <div>
+        <span>&#9993;</span>
+        <div>
+          <strong>Stay Updated!</strong>
+          <small>Subscribe to get exciting offers &amp; updates</small>
+        </div>
+      </div>
+      <form>
+        <input type="email" aria-label="Email address" placeholder="Enter your email address">
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 TastyBowl. All rights reserved.</p>
+      <nav>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms &amp; Conditions</a>
+        <a href="#">Contact Us</a>
+      </nav>
+      <div>
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Instagram">&#9678;</a>
+        <a href="#" aria-label="Twitter">&#9829;</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
