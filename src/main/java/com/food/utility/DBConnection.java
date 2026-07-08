@@ -5,9 +5,18 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
-    private static final String url = "jdbc:mysql://localhost:3306/fooddelivery";
-    private static final String username = "root";
-    private static final String password = "root";
+    private static String getEnv(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return (value != null && !value.trim().isEmpty()) ? value : defaultValue;
+    }
+
+    private static final String host = getEnv("MYSQLHOST", "localhost");
+    private static final String port = getEnv("MYSQLPORT", "3306");
+    private static final String db = getEnv("MYSQLDATABASE", "fooddelivery");
+
+    private static final String url = getEnv("JDBC_URL", "jdbc:mysql://" + host + ":" + port + "/" + db);
+    private static final String username = getEnv("MYSQLUSER", "root");
+    private static final String password = getEnv("MYSQLPASSWORD", "root");
 
     private static Connection con = null;
 
