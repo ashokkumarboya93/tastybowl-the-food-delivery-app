@@ -360,14 +360,7 @@
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="nav">
-      <a href="callRestaurantServlet" class="brand" style="text-decoration:none; color:inherit;">
-        <div class="brand-mark"></div>
-        TastyBowl
-      </a>
-    </div>
-  </div>
+  <jsp:include page="navbar.jsp" />
 
   <div class="container">
     <h1>Confirm <span>Your Order</span></h1>

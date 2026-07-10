@@ -69,13 +69,17 @@ public class CartServlet extends HttpServlet {
             int itemRestaurantId = menu.getRestaurantId();
             Integer cartRestaurantId = (Integer) session.getAttribute("cartRestaurantId");
 
+            boolean isAjax = "true".equals(req.getParameter("isAjax"));
+
             if ("add".equals(action)) {
                 // Restaurant Validation
+                boolean cartReset = false;
                 if (cartRestaurantId != null && cartRestaurantId != itemRestaurantId) {
                     // Different restaurant! Reset the cart
                     cart.clear();
                     session.setAttribute("cartRestaurantId", itemRestaurantId);
                     session.setAttribute("cartMessage", "Your cart was reset because you added items from a different restaurant.");
+                    cartReset = true;
                 } else if (cartRestaurantId == null) {
                     session.setAttribute("cartRestaurantId", itemRestaurantId);
                 }
@@ -91,6 +95,18 @@ public class CartServlet extends HttpServlet {
                 } else {
                     item.setQuantity(item.getQuantity() + 1);
                     item.setTotalPrice(item.getQuantity() * menu.getPrice());
+                }
+
+                if (isAjax) {
+                    int totalItems = 0;
+                    for (CartItem ci : cart.values()) {
+                        totalItems += ci.getQuantity();
+                    }
+                    resp.setContentType("application/json");
+                    resp.setCharacterEncoding("UTF-8");
+                    String msg = cartReset ? "Cart reset for new restaurant. Item added!" : "Item added to cart!";
+                    resp.getWriter().write("{\"success\": true, \"cartItemCount\": " + totalItems + ", \"message\": \"" + msg + "\"}");
+                    return;
                 }
 
                 // Redirect back to menu of the restaurant

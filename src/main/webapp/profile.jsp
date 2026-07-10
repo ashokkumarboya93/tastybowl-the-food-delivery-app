@@ -347,22 +347,7 @@
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="nav">
-      <a href="callRestaurantServlet" class="brand" style="text-decoration:none; color:inherit;">
-        <div class="brand-mark"></div>
-        TastyBowl
-      </a>
-      <ul class="nav-links">
-        <li><a href="callRestaurantServlet">Home</a></li>
-        <li><a href="orders">My Orders</a></li>
-        <li><a href="profile" class="active">Profile</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="logout" class="btn-secondary" style="height: 38px; border-radius: 19px; padding: 0 14px;">Logout</a>
-      </div>
-    </div>
-  </div>
+  <jsp:include page="navbar.jsp" />
 
   <div class="container">
     <h1>My <span>Profile</span></h1>

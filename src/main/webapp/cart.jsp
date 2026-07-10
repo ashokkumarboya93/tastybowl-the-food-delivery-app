@@ -553,30 +553,7 @@
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="nav">
-      <a href="callRestaurantServlet" class="brand">
-        <div class="brand-mark"></div>
-        TastyBowl
-      </a>
-      <ul class="nav-links">
-        <li><a href="callRestaurantServlet">Home</a></li>
-        <li><a href="orders">My Orders</a></li>
-        <li><a href="profile">Profile</a></li>
-      </ul>
-      <div class="nav-actions">
-        <% if (user != null) { %>
-          <a href="profile" class="profile">
-            <div class="avatar"><%= user.getUsername().substring(0, 1).toUpperCase() %></div>
-            <%= user.getUsername() %>
-          </a>
-          <a href="logout" class="btn-secondary" style="height: 38px; border-radius: 19px; padding: 0 14px;">Logout</a>
-        <% } else { %>
-          <a href="login.jsp" class="btn-secondary" style="height: 38px; border-radius: 19px; padding: 0 14px;">Login</a>
-        <% } %>
-      </div>
-    </div>
-  </div>
+  <jsp:include page="navbar.jsp" />
 
   <div class="container">
     <% if (session.getAttribute("cartMessage") != null) { %>

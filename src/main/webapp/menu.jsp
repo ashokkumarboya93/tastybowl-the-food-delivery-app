@@ -510,38 +510,7 @@
 </svg>
 
 <!-- NAVBAR -->
-<header class="nav-wrap">
-  <nav class="nav w">
-    <a class="logo" href="callRestaurantServlet">
-      <div class="logo-mark"><svg viewBox="0 0 24 24"><use href="#i-bowl"/></svg></div>
-      <span class="logo-text">TastyBowl</span>
-    </a>
-
-    <ul class="nav-links">
-      <li><a href="callRestaurantServlet">Home</a></li>
-      <li><a class="active" href="#">Menu</a></li>
-      <li><a href="orders">My Orders</a></li>
-      <li><a href="profile">Profile</a></li>
-    </ul>
-
-    <div class="nav-actions">
-      <button class="nav-btn" aria-label="Search"><span class="icon"><svg><use href="#i-search"/></svg></span></button>
-      <a class="nav-btn" href="cart.jsp" aria-label="Cart">
-        <span class="icon"><svg><use href="#i-cart"/></svg></span>
-        <span class="cart-count"><%=cartItemCount%></span>
-      </a>
-      <% if (loggedInUser != null) { %>
-        <a class="nav-avatar" href="profile">
-          <span class="avatar-circle"><%=loggedInUser.getUsername().substring(0,1).toUpperCase()%></span>
-          <span><%=loggedInUser.getUsername()%></span>
-          <span class="icon caret" style="width:10px;height:10px"><svg><use href="#i-down"/></svg></span>
-        </a>
-      <% } else { %>
-        <a class="sign-in-btn" href="login.jsp">Sign In</a>
-      <% } %>
-    </div>
-  </nav>
-</header>
+<jsp:include page="navbar.jsp" />
 
 <main>
   <% if (request.getParameter("successMessage") != null) { %>
@@ -627,7 +596,7 @@
                 </div>
                 <div class="price-row">
                     <span class="price">&#8377; <%= menu.getPrice() %></span>
-                    <form action="cart" method="POST" style="display:inline;">
+                    <form class="ajax-cart-form" action="cart" method="POST" style="display:inline;">
                         <input type="hidden" name="action" value="add">
                         <input type="hidden" name="menuId" value="<%= menu.getMenuId() %>">
                         <button class="add-btn" type="submit">
@@ -679,6 +648,96 @@
       <div style="display:flex;align-items:center;gap:4px">Made with <span class="icon" style="width:14px;height:14px;color:#e53935"><svg><use href="#i-heart"/></svg></span> for food lovers</div>
     </div>
   </footer>
+  <style>
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 1000;
+    }
+    .toast {
+      background: #6c2de0;
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(108, 45, 224, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateY(100px);
+      opacity: 0;
+      animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    .toast.hide {
+      animation: slideDown 0.4s ease-in forwards;
+    }
+    @keyframes slideUp {
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideDown {
+      to { transform: translateY(100px); opacity: 0; }
+    }
+  </style>
+  <div class="toast-container" id="toastContainer"></div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const forms = document.querySelectorAll(".ajax-cart-form");
+      const toastContainer = document.getElementById("toastContainer");
 
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = `<span class="icon" style="width:20px;height:20px;"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9Z"/></svg></span> ${message}`;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add("hide");
+          toast.addEventListener("animationend", () => {
+            toast.remove();
+          });
+        }, 3000);
+      }
+
+      forms.forEach(form => {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const formData = new URLSearchParams(new FormData(form));
+          formData.append("isAjax", "true");
+
+          try {
+            const response = await fetch(form.action, {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: formData.toString()
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              if (data.success) {
+                // Update cart count
+                const cartCountEl = document.querySelector(".cart-count");
+                if (cartCountEl) {
+                  cartCountEl.textContent = data.cartItemCount;
+                  cartCountEl.style.transform = "scale(1.2)";
+                  setTimeout(() => cartCountEl.style.transform = "scale(1)", 200);
+                }
+                showToast(data.message);
+              }
+            } else {
+              showToast("Failed to add item to cart.");
+            }
+          } catch (error) {
+            console.error("Cart error:", error);
+            showToast("An error occurred.");
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

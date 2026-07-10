@@ -665,47 +665,7 @@
 </svg>
 
 <!-- ══════ NAVBAR ══════ -->
-<header class="nav-wrap">
-  <nav class="nav w">
-    <a class="logo" href="callRestaurantServlet">
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24"><use href="#i-bowl"/></svg>
-      </div>
-      <span class="logo-text">TastyBowl</span>
-    </a>
-
-    <ul class="nav-links">
-      <li><a class="active" href="callRestaurantServlet">Home</a></li>
-      <li><a href="callRestaurantServlet">Restaurants</a></li>
-      <li><a href="#">Offers</a></li>
-      <li><a href="orders">My Orders</a></li>
-      <li><a href="profile">Profile</a></li>
-    </ul>
-
-    <div class="nav-loc">
-      <span class="icon"><svg><use href="#i-pin"/></svg></span>
-      <span>Bangalore</span>
-      <span class="icon caret"><svg><use href="#i-down"/></svg></span>
-    </div>
-
-    <div class="nav-actions">
-      <button class="nav-btn" aria-label="Search"><span class="icon"><svg><use href="#i-search"/></svg></span></button>
-      <a class="nav-btn" href="cart.jsp" aria-label="Cart">
-        <span class="icon"><svg><use href="#i-cart"/></svg></span>
-        <span class="cart-count"><%=cartItemCount%></span>
-      </a>
-      <% if (loggedInUser != null) { %>
-        <a class="nav-avatar" href="profile">
-          <span class="avatar-circle"><%=loggedInUser.getUsername().substring(0,1).toUpperCase()%></span>
-          <span><%=loggedInUser.getUsername()%></span>
-          <span class="icon caret" style="width:10px;height:10px"><svg><use href="#i-down"/></svg></span>
-        </a>
-      <% } else { %>
-        <a class="sign-in-btn" href="login.jsp">Sign In</a>
-      <% } %>
-    </div>
-  </nav>
-</header>
+<jsp:include page="navbar.jsp" />
 
 <!-- ══════ HERO ══════ -->
 <section class="hero">

@@ -362,25 +362,7 @@
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="nav">
-      <a href="callRestaurantServlet" class="brand" style="text-decoration:none; color:inherit;">
-        <div class="brand-mark"></div>
-        TastyBowl
-      </a>
-      <ul class="nav-links">
-        <li><a href="callRestaurantServlet">Home</a></li>
-        <li><a href="orders" class="active">My Orders</a></li>
-        <li><a href="profile">Profile</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="profile" class="profile">
-          <div class="avatar"><%= user.getUsername().substring(0, 1).toUpperCase() %></div>
-          <%= user.getUsername() %>
-        </a>
-      </div>
-    </div>
-  </div>
+  <jsp:include page="navbar.jsp" />
 
   <div class="container">
     <h1>Your <span>Order History</span></h1>
